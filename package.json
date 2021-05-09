@@ -1,0 +1,22 @@
+{
+  "name": "sopwithclone",
+  "version": "1.0.0",
+  "description": "Clone of the beloved DOS game Sopwith",
+  "main": "serve.js",
+  "scripts": {
+    "start": "node serve.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Joon/SopwithClone.git"
+  },
+  "author": "@Joon & @Frank-Franklin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Joon/SopwithClone/issues"
+  },
+  "homepage": "https://github.com/Joon/SopwithClone#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

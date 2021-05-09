@@ -16,7 +16,9 @@ var Sopwith = new Phaser.Class({
     {
         // TODO: Load sopwith assets
         //this.load.atlas('assets', 'assets/games/breakout/breakout.png', 'assets/games/breakout/breakout.json');
-        this.load.image('assets', 'assets/pics/plane2.png');
+        this.load.image('plane', 'assets/pics/plane2.png');
+        this.load.image('burntPlane', 'assets/pics/burntplane.png');
+        this.load.image('ground', 'assets/pics/ground.png');
         this.load.image('breadcrumb', 'assets/pics/breadcrumb.png');
     },
 
@@ -24,22 +26,32 @@ var Sopwith = new Phaser.Class({
     {
         this.physics.world.setBoundsCollision(true, true, true, true);
 
-        this.plane = this.physics.add.image(400, 550, 'assets', 'plane.png');       
-        this.planeAOA_Ind = this.physics.add.image(400, 550, 'breadcrumb', 'breadcrumb.png');       
+        //this.plane = new Sprite(scene, x, y, texture, [frame]);  this.physics.add.sprite   image(400, 550, 'plane');
+        this.plane = this.physics.add.sprite(400, 550, 'plane');
+        this.plane.crashed = false;
+        this.planeAOA_Ind = this.physics.add.image(400, 550, 'breadcrumb');
 
         this.plane.setBounce(0.2);
+        this.plane.label = "plane";
         this.plane.setCollideWorldBounds(true);
         this.plane.aoa = 0;
         var style = { font: "12px Arial", fill: "#ff0044", wordWrap: true, wordWrapWidth: this.plane.width, align: "center", backgroundColor: "#ffff00" };
-        //this.text = this.add.text(0, 0, "- text on a sprite -", style);
-        //this.text.anchor.set(0.5);
+        //this.text = this.add.text(0, 0, "", style);
         
+        this.boundaries = this.physics.add.staticGroup();
+        this.boundaries.create(200, 590, 'ground').label = "ground";
+        this.boundaries.create(600, 590, 'ground').label = "ground";      
+        //captureText = this.text;
+        this.physics.add.collider(this.plane, this.boundaries, function (plane, obstacle) {
+            //captureText.setText("BOOM");
+            plane.setTexture("burntPlane");
+            plane.crashed = true;
+            plane.setVelocityX(0);
+            plane.setVelocityY(0);
+        });
+
         cursors = this.input.keyboard.createCursorKeys();
 
-        breadcrumbs = this.physics.add.staticGroup();
-        for (i = 0; i < 800; i += 20) {
-            breadcrumbs.create(i, 595, 'breadcrumb');
-        }
     },
 
     updatePlaneAOA(delta) {
@@ -67,16 +79,19 @@ var Sopwith = new Phaser.Class({
     
     update: function ()
     {
+        if (this.plane.crashed) {
+            return;
+        }
+
         //this.text.x = Math.floor(this.plane.x);
         //this.text.y = Math.floor(this.plane.y);
-        
         if (cursors.up.isDown) {
             this.updatePlaneAOA(1);
         }
         if (cursors.down.isDown) {
             this.updatePlaneAOA(-1);
         }
-
+    
         if (this.plane.y < 20) {            
             this.plane.aoa = 90;
             this.plane.y = 21;
@@ -96,12 +111,7 @@ var Sopwith = new Phaser.Class({
         //this.planeAOA_Ind.y = this.plane.y + y;
 
         this.plane.setVelocityX(x);
-        this.plane.setVelocityY(y);        
-
-        if (this.plane.y < 100)
-        {
-            console.log("ALTITUDE WARNING");
-        }
+        this.plane.setVelocityY(y);               
     }
 
 });

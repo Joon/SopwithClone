@@ -31,7 +31,7 @@ var Sopwith = new Phaser.Class({
         this.plane.setCollideWorldBounds(true);
         this.plane.aoa = 0;
         var style = { font: "12px Arial", fill: "#ff0044", wordWrap: true, wordWrapWidth: this.plane.width, align: "center", backgroundColor: "#ffff00" };
-        this.text = this.add.text(0, 0, "- text on a sprite -", style);
+        //this.text = this.add.text(0, 0, "- text on a sprite -", style);
         //this.text.anchor.set(0.5);
         
         cursors = this.input.keyboard.createCursorKeys();
@@ -67,8 +67,8 @@ var Sopwith = new Phaser.Class({
     
     update: function ()
     {
-        this.text.x = Math.floor(this.plane.x);
-        this.text.y = Math.floor(this.plane.y);
+        //this.text.x = Math.floor(this.plane.x);
+        //this.text.y = Math.floor(this.plane.y);
         
         if (cursors.up.isDown) {
             this.updatePlaneAOA(1);
@@ -82,7 +82,7 @@ var Sopwith = new Phaser.Class({
             this.plane.y = 21;
         }
 
-        this.text.setText(`x: ${this.plane.x.toFixed(2)}, y: ${this.plane.y.toFixed(2)}, rotation: ${this.plane.angle}`);
+        //this.text.setText(`x: ${this.plane.x.toFixed(2)}, y: ${this.plane.y.toFixed(2)}, rotation: ${this.plane.angle}`);
         this.plane.angle = this.plane.aoa;
         
         y = this.calcYVelocity(this.plane.angle, this.planeSpeed);
